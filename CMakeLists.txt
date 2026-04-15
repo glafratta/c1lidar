@@ -44,8 +44,11 @@ set_target_properties(c1lidarrpi PROPERTIES
 
 target_link_libraries(c1lidarrpi Threads::Threads rt)
 
-add_executable(printdata printdata.cpp)
-target_link_libraries(printdata c1lidarrpi Threads::Threads)
+add_executable(printdata_rock5 printdata_rock5.cpp)
+target_link_libraries(printdata_rock5 c1lidarrpi Threads::Threads)
+
+add_executable(printdata_rpi5 printdata_rpi5.cpp)
+target_link_libraries(printdata_rpi5 c1lidarrpi Threads::Threads)
 
 install(TARGETS c1lidarrpi EXPORT c1lidarrpi_targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}

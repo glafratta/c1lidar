@@ -1,10 +1,9 @@
-# Slamtec RPLIDAR C1 driver class for the Rock5 and RPI
+# Slamtec RPLIDAR C1 driver class for the Rock5 and Raspberry PI 5
 
 ![alt tag](lidar_on_robot.jpg)
 
 This project describes how to connect a Slamtech RPLIDAR C1 directly
-to the serial port of the Rock5. It should also work with the
-RPI but hasn't been tested yet.
+to the serial port of the Raspberry PI 5 or Rock5.
 
 This is a re-worked version of the official [Slamtec SDK](https://github.com/Slamtec/rplidar_sdk) to support cmake and wraps it all into a C++ class.
 
@@ -17,11 +16,27 @@ Connect the LIDAR to the UART pins:
 
 ![alt tag](wiring.png)
 
-## Software
+## Raspberry PI 5 config
+
+Disable the login console:
+
+ - Start raspi-config
+ - Select Serial Port   Enable/disable shell messages on the serial connection
+ - Answer No: Would you like a login shell to be accessible over serial?
+ - Answer Yes: Would you like the serial port hardware to be enabled?
+ - Reboot when prompted
+
+Edit `/boot/firmware/config.txt` and add:
+
+```
+enable_uart=1
+dtoverlay=uart
+
+```
+
+## Rock5 config
 
 This howto is for ARMbian.
-
-### Prerequisites
 
 Enable the UART for serial communication. Start `sudo nano /boot/armbianEnv.txt`, identify these lines and add/edit them that
 they look like these:
@@ -36,7 +51,7 @@ This enables the UART.
 
 Add yourself to the group `dialout` to access /dev/tty*.
 
-### Installation
+## Installation
 
 `cmake .`
 
@@ -58,13 +73,14 @@ which then receives both the polar and Cartesian coordinates after
 a successful 360 degree scan. Register your `DataInterface` with
 `registerInterface`.
 
-## Example program
-`printdata` prints tab separated distance data as
+## Example: printing LIDAR data
+`printdata_rpi5` or `printdata_rock5` print data on the Raspberry PI 5 or Rock 5, respectively.
+The output is to the console as tab separated distance data as
 `x <tab> y <tab> r <tab> phi <tab> strength` until a key is pressed.
 
 Pipe the data into a textfile and plot it with `gnuplot`:
 ```
-./printdata > tt2.tsv
+./printdata_xxx > tt2.tsv
 gnuplot> plot "tt2.tsv"
 ```
 ![alt tag](map.png)

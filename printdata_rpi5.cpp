@@ -4,6 +4,7 @@
 #include <thread>   // For sleep functionality
 #include <chrono>   // For timing
 
+const char RPI_SERIAL_DEV[] = "/dev/ttyAMA0";
 
 class DataInterface : public C1Lidar::DataInterface {
 public:
@@ -34,7 +35,7 @@ int main(int, char **) {
     lidar.registerInterface(&dataInterface);  // Registers the callback function
 
     try {
-        lidar.start("/dev/ttyS2");  // Start the LIDAR
+        lidar.start(RPI_SERIAL_DEV);  // Start the LIDAR
     } catch (const char* msg) {
         std::cerr << "ERROR: " << msg << std::endl;
         lidar.stop(); // Make sure motor and scan stop

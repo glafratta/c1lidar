@@ -84,8 +84,7 @@ public:
      * motor and then saving the data in the current
      * buffer and providing the data via the callback.
      **/
-    void start(const char *serial_port = "/dev/ttyS2",
-               const unsigned rpm = 300);
+    void start(const char *serial_port);
 
     /**
      * Stops the data acquisition

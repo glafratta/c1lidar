@@ -21,7 +21,7 @@ void C1Lidar::stop() {
     }
 }
 
-void C1Lidar::start(const char* serial_port, const unsigned rpm) {
+void C1Lidar::start(const char* serial_port) {
     drv = RPlidarDriver::CreateDriver(DRIVER_TYPE_SERIALPORT);
     if (!drv) throw std::runtime_error("Insufficient memory for driver");
 
