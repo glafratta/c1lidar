@@ -15,6 +15,9 @@
 
 #include "rplidarsdk/sdk/include/rplidar.h"
 
+const char RPI_SERIAL_DEV[] = "/dev/ttyAMA0";
+const char ROCK5_SERIAL_DEV[] = "/dev/ttyS2";
+
 using namespace rp::standalone::rplidar;
 
 /**
