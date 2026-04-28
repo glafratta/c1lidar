@@ -4,7 +4,6 @@
 #include <thread>   // For sleep functionality
 #include <chrono>   // For timing
 
-const char ROCK5_SERIAL_DEV[] = "/dev/ttyS2";
 
 class DataInterface : public C1Lidar::DataInterface {
 public:

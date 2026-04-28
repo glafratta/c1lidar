@@ -4,8 +4,6 @@
 #include <thread>   // For sleep functionality
 #include <chrono>   // For timing
 
-const char RPI_SERIAL_DEV[] = "/dev/ttyAMA0";
-
 class DataInterface : public C1Lidar::DataInterface {
 public:
 	void newScanAvail(C1LidarData (&data)[C1Lidar::nDistance]) {
