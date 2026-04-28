@@ -5,18 +5,15 @@
 #ifndef C1LIDARRPI_H
 #define C1LIDARRPI_H
 
-#include <iostream>
 #include <cstring>
-#include <unistd.h>
-#include <termios.h>
 #include <fcntl.h>
-#include <thread>
+#include <iostream>
 #include <mutex>
+#include <termios.h>
+#include <thread>
+#include <unistd.h>
 
 #include "rplidarsdk/sdk/include/rplidar.h"
-
-const char RPI_SERIAL_DEV[] = "/dev/ttyAMA0";
-const char ROCK5_SERIAL_DEV[] = "/dev/ttyS2";
 
 using namespace rp::standalone::rplidar;
 
@@ -25,7 +22,7 @@ using namespace rp::standalone::rplidar;
  **/
 class C1LidarData
 {
-public:
+  public:
     /**
      * Distance in m
      **/
@@ -64,7 +61,17 @@ public:
  **/
 class C1Lidar
 {
-public:
+  public:
+    /**
+     * Serial device on a Raspberry PI
+     */
+    static constexpr char RPI_SERIAL_DEV[] = "/dev/ttyAMA0";
+    
+    /**
+     * Serial device on a Rock5
+     */
+    static constexpr char ROCK5_SERIAL_DEV[] = "/dev/ttyS2";
+
     /**
      * The RPM of the LIDAR which is const at 10Hz or 600RPM
      * Unit is RPM.
@@ -87,20 +94,17 @@ public:
      * motor and then saving the data in the current
      * buffer and providing the data via the callback.
      **/
-    void start(const char *serial_port);
+    void start (const char *serial_port);
 
     /**
      * Stops the data acquisition
      **/
-    void stop();
+    void stop ();
 
     /**
      * Destructor which stops the motor and the data acquisition thread.
      **/
-    ~C1Lidar()
-    {
-        stop();
-    }
+    ~C1Lidar () { stop (); }
 
     /**
      * Callback interface which needs to be implemented by the user.
@@ -109,33 +113,29 @@ public:
      **/
     struct DataInterface
     {
-        virtual void newScanAvail(C1LidarData (&)[C1Lidar::nDistance]) = 0;
+        virtual void newScanAvail (C1LidarData (&)[C1Lidar::nDistance]) = 0;
     };
 
     /**
      * Register the callback interface here to receive data.
      **/
-    void registerInterface(DataInterface *di)
-    {
-        dataInterface = di;
-    }
+    void registerInterface (DataInterface *di) { dataInterface = di; }
 
     /**
      * Returns the current databuffer which is not being written to.
      **/
-inline C1LidarData (&getCurrentData()) [nDistance]
-{
-    readoutMtx.lock();
-    return c1LidarData[!currentBufIdx];
-    readoutMtx.unlock();
-}
+    inline C1LidarData (&getCurrentData ())[nDistance]
+    {
+        readoutMtx.lock ();
+        return c1LidarData[!currentBufIdx];
+        readoutMtx.unlock ();
+    }
 
-private :
-
+  private:
     static const int nPackets = 90;
     DataInterface *dataInterface = nullptr;
-    void getData();
-    void run();
+    void getData ();
+    void run ();
     int tty_fd = 0;
     bool running = true;
     C1LidarData c1LidarData[2][nDistance];

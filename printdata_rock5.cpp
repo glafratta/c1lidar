@@ -1,7 +1,5 @@
 #include "c1lidarrpi.h"
 #include <iostream>
-#include <fstream>  // Include for file handling
-#include <thread>   // For sleep functionality
 #include <chrono>   // For timing
 
 
@@ -34,7 +32,7 @@ int main(int, char **) {
     lidar.registerInterface(&dataInterface);  // Registers the callback function
 
     try {
-        lidar.start(ROCK5_SERIAL_DEV);  // Start the LIDAR
+        lidar.start(C1Lidar::ROCK5_SERIAL_DEV);  // Start the LIDAR
     } catch (const char* msg) {
         std::cerr << "ERROR: " << msg << std::endl;
         lidar.stop(); // Make sure motor and scan stop
